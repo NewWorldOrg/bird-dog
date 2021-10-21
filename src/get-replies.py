@@ -8,7 +8,7 @@ config.read('./config.ini')
 tw_config = config['Twitter']
 
 tw_client = Twarc2(
-    bearer_token=config['BEARER_TOKEN']
+    bearer_token=tw_config['BEARER_TOKEN']
 )
 
 def get_conversation_id(tweet_id: str):
