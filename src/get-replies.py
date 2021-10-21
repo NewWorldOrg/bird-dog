@@ -2,7 +2,7 @@ from twarc.client2 import Twarc2
 from twarc.expansions import ensure_flattened, flatten
 import configparser
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(interpolation=None)
 config.read('./config.ini')
 
 tw_config = config['Twitter']
