@@ -16,7 +16,7 @@ pipenv shell
 
 データの取得とCSVの出力のプログラムは別々にしてあります。  
 
-試しに以下のツイートで試します。  
+試しに以下のツイートでやってみます。  
 https://twitter.com/nomorehole2/status/1452231609965371393  
 
 ```bash
