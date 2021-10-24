@@ -1,16 +1,15 @@
 import json
 from pathlib import Path
-import pandas as pd
-import time
 import utils
 
 
 class Writer:
-    def __init__(self, tweet_id: str, output_directory: str = "output") -> None:
+    def __init__(self, tweet_id: str, output_directory: str = "output"):
         self.tweet_id = tweet_id
-
         path_str = "{output_directory}/{tweet_id}-{now}".format(
-            output_directory=output_directory, now=utils.now(), tweet_id=tweet_id
+            output_directory=output_directory,
+            now=utils.now(),
+            tweet_id=tweet_id,
         )
         self.output_base_path = Path(path_str).absolute()
         self.output_raw_data_path = self.output_base_path.joinpath("raw")
@@ -18,7 +17,6 @@ class Writer:
         # 出力先のディレクトリが存在しなければ作成する
         direcotries = [
             self.output_base_path,
-            # self.output_reply_path,
             self.output_raw_data_path,
         ]
         for direcoty in direcotries:
