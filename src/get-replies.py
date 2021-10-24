@@ -22,7 +22,7 @@ def make_query(conversation_id: str):
 
 
 parser = argparse.ArgumentParser(
-    "get replies", usage="python src/replies.py --conv-id 1418567538753949700"
+    "get replies", usage="python src/get-replies.py --conv-id 1418567538753949700"
 )
 parser.add_argument(
     "--conv-id",
