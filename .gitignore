@@ -2,3 +2,4 @@
 config.ini
 elasticsearch*
 kibana*
+output
