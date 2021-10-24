@@ -18,6 +18,7 @@ parser.add_argument("--target", type=str, required=True)
 args = parser.parse_args()
 target = args.target
 
+# 取得したリプライデータを読み出し
 target_path = Path("output/{target}".format(target=target)).resolve()
 
 tweets: List[dict] = []
@@ -42,6 +43,7 @@ else:
     logger.error("ファイルが存在しません")
 
 
+# CSVデータの書き出し
 columns = ["user_id", "username", "name", "description", "text"]
 
 
