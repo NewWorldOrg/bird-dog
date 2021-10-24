@@ -40,7 +40,3 @@ query = make_query(conversation_id)
 for page in tw_client.search_all(query=query):
     for tweet in ensure_flattened(page):
         writer.save_raw(tweet)
-
-for page in tw_client.search_all(query=query):
-    for tweet in ensure_flattened(page):
-        writer.save_raw(tweet)
