@@ -1,6 +1,5 @@
 import json
 import argparse
-from os import path
 from twarc.client2 import Twarc2
 from twarc.expansions import ensure_flattened
 import configparser
