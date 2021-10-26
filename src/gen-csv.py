@@ -12,14 +12,14 @@ logger = logging.getLogger("gen-csv")
 # コマンドライン引数の設定と取得
 parser = argparse.ArgumentParser(
     "gen csv",
-    usage="python src/gen-csv.py --target 1418567538753949700-20211024183641",
+    usage="python src/gen-csv.py --target output/1418567538753949700-20211024183641",
 )
 parser.add_argument("--target", type=str, required=True)
 args = parser.parse_args()
 target = args.target
 
 # 取得したリプライデータを読み出し
-target_path = Path("output/{target}".format(target=target)).resolve()
+target_path = Path(target).resolve()
 
 tweets: List[dict] = []
 

@@ -32,7 +32,7 @@ INFO:twarc:getting ('https://api.twitter.com/2/tweets/search/all',) {'params': {
 INFO:twarc:No more results for search conversation_id:1452231609965371393.
 INFO:get-replies:取得完了しました /home/user/dev/personal/bird-dog/output/1452231609965371393-20211024223924
 
-python src/gen-csv.py --target 1452231609965371393-20211024223924
+python src/gen-csv.py --target ./output/1452231609965371393-20211024223924
 
 # ログ出力例
 INFO:gen-csv:読み込み完了(1/12) /home/user/dev/personal/bird-dog/output/1452231609965371393-20211024223924/raw/1452250363080306692.json

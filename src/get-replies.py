@@ -48,7 +48,7 @@ output_rawdata_path = output_path.joinpath("raw")
 direcotries = [output_path, output_rawdata_path]
 for direcoty in direcotries:
     if not direcoty.exists():
-        direcoty.mkdir()
+        direcoty.mkdir(parents=True)
 
 # リプライの取得と保存
 query = "conversation_id:{conversation_id}".format(conversation_id=conversation_id)
