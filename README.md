@@ -4,19 +4,86 @@
 アカデミック版のtwitter api(v2)のキーが必要です。  
 取得したリプライをcsvに書き出すツールも付属してます。  
 
+# 前提条件
+
+アプリを実行するマシンに以下のソフトウェアがインストールされていること
+
+- git
+- docker
+- docker-compose
+
+# アプリをローカルに落とす方法
+
+任意のディレクトリで以下のコマンドを実行
+
+```shell
+git clone https://github.com/NewWorldOrg/bird-dog
+```
+
+無事に `bird-dog` が存在されている事を確認できたら以下のコマンドで落としてきたアプリのディレクトリに入る
+
+```shell
+cd bird-dog
+```
+
 # 初期設定
 
-config.sample.iniをconfig.iniという名前でコピーする。  
-config.iniに各種鍵を設定する。  
+## docker環境の構築手順
+
+### 1.docker-compose.ymlを作る
+
+```shell
+cp docker-compose-example.yml docker-compose.yml
+```
+
+- **※ 必要なら適宜docker-compose.ymlを書き換える**
+
+### 2.docker環境をビルドする
+
+```shell
+docker-compose build
+```
+
+- ビルドが乾燥したら次のステップへ
+
+### 3.docker環境の起動
+
+```shell
+docker-compose up -d
+```
+
+# 設定ファイルの構築
+config.sample.iniをconfig.iniという名前でコピーする。
+
+```shell
+cp config.sample.ini config.init
+```
+
+コピーで作成された、config.iniを書き換えて各種鍵を設定する。
+
+# 使い方
+
+dockerで構築したコンテナに入る
+
+```shell
+docker-compose exec app bash
+```
+
+無事コンテナに入れたら以下のコマンドを実行してpipenvの環境を構築して入る
 
 ```bash
 # 依存関係の解決
 pipenv sync
 
+# pipenvで作られた仮想環境へ入る
 pipenv shell
 ```
 
-# リプライの取得からCSVの出力まで
+# 使い方
+
+## 例: リプライの取得からCSVの出力まで
+
+- `pipenv shell` で仮想環境に入れば以下の手順でツイートの解析を出力ができるようになる
 
 データの取得とCSVの出力のプログラムは別々にしてあります。  
 
@@ -32,7 +99,7 @@ INFO:twarc:getting ('https://api.twitter.com/2/tweets/search/all',) {'params': {
 INFO:twarc:No more results for search conversation_id:1452231609965371393.
 INFO:get-replies:取得完了しました /home/user/dev/personal/bird-dog/output/1452231609965371393-20211024223924
 
-python src/gen-csv.py --target ./output/1452231609965371393-20211024223924
+python src/gen-csv.py --target ./output/1452231609965371393-20211024223924/
 
 # ログ出力例
 INFO:gen-csv:読み込み完了(1/12) /home/user/dev/personal/bird-dog/output/1452231609965371393-20211024223924/raw/1452250363080306692.json
