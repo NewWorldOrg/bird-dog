@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 twarc = "*"
-elasticsearch = "*"
 pandas = "*"
 black = "*"
 
