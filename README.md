@@ -118,6 +118,15 @@ INFO:gen-csv:出力完了 /home/user/dev/personal/bird-dog/output/14522316099653
 
 ```
 
+## 特定ユーザーのフォローとフォロワーを取得しCSVで出力する
+
+データ量が多かった場合（100万件とか）の動作確認をしていないため落ちるかもしれないです。
+
+```bash
+# 「@」は含めない点に注意する
+python src/get-followers.py --screen-name AbeShinzo
+```
+
 # コラム
 
 鳥猟犬とは - コトバンク : https://kotobank.jp/word/%E9%B3%A5%E7%8C%9F%E7%8A%AC-1368471  

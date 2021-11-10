@@ -154,3 +154,5 @@ following_csv_filepath = output_path.joinpath("following.csv")
 df_following.to_csv(following_csv_filepath)
 
 logger.info("CSVの出力が完了しました。")
+
+# TODO CSVの出力のみを行えるようにする
