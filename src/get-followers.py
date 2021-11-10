@@ -2,13 +2,14 @@ import argparse
 import configparser
 import logging
 from pathlib import Path
+from typing import List
 import sys
 import time
 import json
 
 from twarc.client2 import Twarc2
 from twarc.expansions import ensure_flattened
-
+import pandas as pd
 
 # ログの設定
 logger = logging.getLogger("get-followers")
@@ -35,6 +36,7 @@ parser.add_argument(
     required=True,
 )
 args = parser.parse_args()
+
 screen_name = args.screen_name
 
 # 出力先のディレクトリの設定
@@ -62,8 +64,8 @@ for directory in directories:
         directory.mkdir(parents=True)
 
 target_user = None
-followers = []
-following = []
+followers: List[dict] = []
+following: List[dict] = []
 
 # ユーザーIDの取得
 for page in tw_client.user_lookup([screen_name], usernames=True):
@@ -75,17 +77,29 @@ if target_user is None:
     logger.error("@{screen_name}は存在しません".format(screen_name=screen_name))
     sys.exit(1)
 
+
+# ファイル名を返す
+def filename_from_user(user: dict):
+    user_id = user.get("id")
+    filename = "{user_id}.json".format(user_id=user_id)
+    return filename
+
+
+# JSONとして保存
+def save_user(user: dict, filepath: Path):
+    with filepath.open(mode="w", encoding="utf-8") as file:
+        file.write(json.dumps(user, sort_keys=False, ensure_ascii=False))
+
+
 # フォロワー取得
 logger.info("フォロワーの取得を開始します。")
 
 for page in tw_client.followers(target_user.get("id")):
     for user in ensure_flattened(page):
-        user_id = user.get("id")
-        filename = "{user_id}.json".format(user_id=user_id)
+        filename = filename_from_user(user)
         filepath = output_rawdata_follower.joinpath(filename)
-
-        with filepath.open(mode="w", encoding="utf-8") as file:
-            file.write(json.dumps(user, sort_keys=False, ensure_ascii=False))
+        save_user(user, filepath)
+        followers.append(user)
 
 logger.info("フォロワーの取得が完了しました。")
 
@@ -94,13 +108,49 @@ logger.info("フォローの取得を開始します。")
 
 for page in tw_client.following(target_user.get("id")):
     for user in ensure_flattened(page):
-        user_id = user.get("id")
-        filename = "{user_id}.json".format(user_id=user_id)
+        filename = filename_from_user(user)
         filepath = output_rawdata_following.joinpath(filename)
-
-        with filepath.open(mode="w", encoding="utf-8") as file:
-            file.write(json.dumps(user, sort_keys=False, ensure_ascii=False))
+        save_user(user, filepath)
+        following.append(user)
 
 logger.info("フォローの取得が完了しました。")
 
-# todo CSVの出力
+# CSVの出力
+logger.info("CSVの出力を開始します。")
+
+# 列情報
+columns = [
+    "name",
+    "screen_name",
+    "description",
+    "following_count",
+    "followers_count",
+    "tweet_count",
+    "created_at",
+]
+
+# 行データを返す
+def to_row(user: dict):
+    metrics: dict = user.get("public_metrics")
+    return [
+        user.get("name"),
+        user.get("username"),
+        user.get("description"),
+        metrics.get("following_count"),
+        metrics.get("followers_count"),
+        metrics.get("tweet_count"),
+        user.get("created_at"),
+    ]
+
+
+# gen follower.csv
+df_follower = pd.DataFrame(data=map(to_row, followers), columns=columns)
+follower_csv_filepath = output_path.joinpath("follower.csv")
+df_follower.to_csv(follower_csv_filepath)
+
+# following.csv
+df_following = pd.DataFrame(data=map(to_row, following), columns=columns)
+following_csv_filepath = output_path.joinpath("following.csv")
+df_following.to_csv(following_csv_filepath)
+
+logger.info("CSVの出力が完了しました。")
